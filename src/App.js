@@ -1,26 +1,56 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import 'antd/dist/antd.css'; // импорт стилей библиотеки Ant Design
+import { Table, Button } from 'antd'; // импорт элементов из библиотеки Ant Design
+import data from './data.json'; // импорт файла json
 
-function App() {
+const App = () => {
+  const columns = [
+    // заголовки таблицы
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      // eslint-disable-next-line react/display-name
+      render: (text) => <p>{text}</p>,
+    },
+    {
+      title: 'Condition',
+      dataIndex: 'condition',
+      key: 'condition',
+    },
+    {
+      title: 'Email',
+      key: 'email',
+      dataIndex: 'email',
+    },
+    {
+      title: 'Addresses',
+      key: 'addresses',
+      dataIndex: 'addresses',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      // eslint-disable-next-line react/display-name
+      render: (text, record) => (
+        <Button size="middle">
+          <p>Редактировать {record.name}</p>
+        </Button>
+      ),
+    },
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="table">
+      <Table columns={columns} dataSource={data} />
     </div>
   );
-}
+};
 
 export default App;
