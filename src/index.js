@@ -1,17 +1,60 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import { observable } from "mobx";
+import { Provider } from "mobx-react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Page1 from "./page1"; // импорт первой страницы
+import Page2 from "./page2"; // импорт внутренней страницы
+import Page3 from "./not-found"; // импорт страницы с отображением ошибки
+import data from "./data.json"; // импорт файла json
+import "./index.css";
+
+const App = () => {
+  return (
+    <div className="App">
+      {/* выбор маршрутов */}
+      <Switch>
+        {/* реализация маршрутов */}
+        <Route exact path="/" component={Page1} />
+        <Route exact path="/page2" component={Page2} />
+        {/* обработка перехода на несуществующие страницы */}
+        <Route path="*" component={Page3} />
+      </Switch>
+    </div>
+  );
+};
+
+// хранилище Mobx
+const store = {
+  data,
+  info: [],
+
+  get getKey() {
+    return this.info.key;
+  },
+  get getName() {
+    return this.info.name;
+  },
+  get getCondition() {
+    return this.info.condition;
+  },
+  get getEmail() {
+    return this.info.email;
+  },
+
+  get getAddresses() {
+    return this.info.addresses;
+  },
+};
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Provider store={store}>
+    {/* сохранение в историю */}
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById("root")
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+export default observable(store);
